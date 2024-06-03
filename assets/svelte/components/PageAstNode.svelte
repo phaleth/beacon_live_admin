@@ -11,7 +11,7 @@
   import type { AstNode } from "$lib/types"
   export let node: AstNode
   export let nodeId: string
-  export let live
+
   $: isDragTarget = $slotTargetElement === node
   $: isSelectedNode = $selectedAstElement === node
   $: isHighlightedNode = $highlightedAstElement === node
@@ -147,7 +147,7 @@
         <svelte:self node={subnode} nodeId="{nodeId}.{index}" />
       {/each}
       {#if isDragTarget && $draggedObject}
-        <div class="dragged-element-placeholder">{@html $draggedObject.body}</div>
+        <div class="dragged-element-placeholder">{@html $draggedObject.template}</div>
       {/if}
     </svelte:element>
   {/if}

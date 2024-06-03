@@ -74,7 +74,8 @@ defmodule Beacon.LiveAdmin.ComponentEditorLive.Index do
       <.table id="components" rows={@streams.components} row_click={fn {_dom_id, component} -> JS.navigate(beacon_live_admin_path(@socket, @beacon_page.site, "/components/#{component.id}")) end}>
         <:col :let={{_, component}} label="Name"><%= component.name %></:col>
         <:col :let={{_, component}} label="Category"><%= component.category %></:col>
-        <:col :let={{_, component}} label="Body"><%= body_excerpt(component.body) %></:col>
+        <:col :let={{_, component}} label="Body"><%= excerpt(component.body) %></:col>
+        <:col :let={{_, component}} label="Template"><%= excerpt(component.template) %></:col>
         <:action :let={{_, component}}>
           <div class="sr-only">
             <.link navigate={beacon_live_admin_path(@socket, @beacon_page.site, "/components/#{component.id}")}>Show</.link>
@@ -94,10 +95,12 @@ defmodule Beacon.LiveAdmin.ComponentEditorLive.Index do
     """
   end
 
-  defp body_excerpt(body) do
-    case String.split_at(body, 100) do
+  defp excerpt(content) when is_binary(content) do
+    case String.split_at(content, 100) do
       {excerpt, ""} -> excerpt
       {excerpt, _} -> [excerpt, " ..."]
     end
   end
+
+  defp excerpt(_content), do: ""
 end
